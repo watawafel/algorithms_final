@@ -1,0 +1,135 @@
+####################################################################
+COMMENTS IN REGARD TO CODE 
+####################################################################
+
+As this assignment was very similar to homework 9, I decided to reuse the code and modify as needed. The dataset was imported using the code provided from the web site where the database was found, it might have been slower, because of decompression, it took an hour to pull in, but I wanted to see how long it would take while I worked on tests for the actual problem. 
+
+After decompression, the data was imported into a pandas database. Which was as the previous assignment then represented as an adjacency graph matrix. Because the rows/columns were quite large, and the “asin” object was represented alphanumerically. I re-represented each item as a smaller unique value that could be reindexed if necessary. Though, for this assignment it was not. Then I could use the same operation “connected_components” on the csgraph. I did it with strong and weak connection with expected equal output (1 connected component) because graph is undirected.
+
+The functions returning reviews given a product ID or reviewer ID, was simply iterating and indexing all rows in specified column for requested values, each function O(n) operation to search for specified input. 
+
+Returning data in ascending order, required a “sort_values” function with the specified column to be sorted on a subset (columns including : “reviewerID”, “asin”) original database. Even though the data seemed to already be sorted by “asin”, it was sorted anyway just in case, and index values maintained by rows within subset of database (“subsetdf”), from this, positions of the rows in sorted subset, not indexes, could be referenced against the original database to provide the requested information.  
+ 
+####################################################################
+ASSIGNMENT QUESTIONS NEEDING FURTHER RESPONSE
+####################################################################
+
+Would a greedy algorithm work for finding the minimum number of
+colors to color this graph? If so, how, if not why not? No coding
+needed. Also, what is the minimum number of colors needed to do
+the coloring? 
+
+Yes, a greedy algorithm could potentially work to find the minimum number of colors, however it would return an approximation of the chromatic number. However; not with certainty of the exact value. The minimum number (chromatic number) of colors to do the coloring are the integer value of the maximum degree in the vertex plus one if a complete/bipartite graph. Since this is not a complete/odd-cycle graph. The number of colors is at minimum the maximum degree of a vertex within the graph, which in this case is 4915.
+
+
+Does the graph have any cycle of length 7? Hint: Don’t code for
+this.
+
+Note: If it had an odd length cycle, the chromatic number would be the max degree + 1.
+
+No it does not. Products do not have direct edges between products, as reviewers do not have directed edges between reviewers. They have to use intermediaries such as: product -> reviewer -> product and/or reviewer -> product -> reviewer. And since 7 is an odd cycle, there would not be a cycle of length 7. You can only have even cycles. 
+
+
+####################################################################
+CODE OUTPUT
+####################################################################
+Last login: Fri Dec  8 15:26:02 on ttys000
+GabrielceansMBP:final gabrielborcean$ python final.py 
+DATA LOADING... 
+DATA LOADED... 
+FINDING UNIQUE FOLLOWERS, PRODUCTS AND REVIEWS... 
+NUMBER OF UNIQUE REVIEWERS: 192403
+NUMBER OF UNIQUE PRODUCTS: 63001
+NUMBER OF UNIQUE REVIEWS: 1689188
+MODES OF REVIEWERS - TOP THREE :
+ADLVFFE4VBT8      431
+A3OXHLG6DIBRW8    407
+A6FIAB28IS79      367
+Name: reviewerID, dtype: int64
+MODES OF PRODUCTS - TOP THREE :
+B007WTAJTO    4915
+B003ES5ZUU    4143
+B00DR0PDNE    3798
+Name: asin, dtype: int64
+FINDING CONNECTED COMPONENTS... 
+SCC: 1
+WCC-DISCONNECTED CLUSTERS: 1
+EXAMPLE OF PRODUCT ID -> REVIEW FUNCTION... 
+
+Product ID : 0528881469 
+Reviews : 
+                                          reviewText      reviewerID
+0  We got this GPS for my husband who is an (OTR)...   AO94DHGC771SJ
+1  I'm a professional OTR truck driver, and I bou...   AMO214LNFCEI4
+2  Well, what can I say.  I've had this unit in m...  A3N7T0DY83Y4IG
+3  Not going to write a long review, even thought...  A1H8PY3QHMQQA0
+4  I've had mine for a year and here's what we go...  A24EV6RXELQZ63
+
+EXAMPLE OF REVIEWER ID -> REVIEW FUNCTION... 
+
+Reviewer ID : AO94DHGC771SJ 
+Reviews : 
+                                                reviewText        asin
+0        We got this GPS for my husband who is an (OTR)...  0528881469
+377374   New Trent really made my life alot easier! I c...  B0013G8PTS
+535992   My husband is a long haul trucker, well you kn...  B001TQSFXS
+856723   I bought this battery pack for my droid and my...  B003ZBZ64Q
+1274085  I have my big Canon that I just don't wanna dr...  B0075SUHKI
+1450204  Very nice case... I couldn't find one I really...  B0096TK6MI
+1627389  Love the Power Xtreme! Received mine last week...  B00DUKJ5CQ
+
+SORTING DATA BY 'asin'... 
+reviewerID                                           A1DV7ZGBNFX0Q3
+asin                                                     B000243DOE
+reviewerName                                                  Zelda
+helpful                                                      [1, 1]
+unixReviewTime                                           1172534400
+reviewText        The price and some positive reviews led me to ...
+overall                                                           1
+reviewTime                                              02 27, 2007
+summary                    Stopped working after 1,500 pictures!!!!
+Name: 100004, dtype: object position 100000
+
+reviewerID                                           A312RO7Y3LF8UE
+asin                                                     B000EUGX70
+reviewerName                             Amazon Customer "Rock Man"
+helpful                                                      [0, 0]
+unixReviewTime                                           1221955200
+reviewText        I have two 550's and they are outstanding.  Th...
+overall                                                           5
+reviewTime                                              09 21, 2008
+summary                                             I ask, it does!
+Name: 199850, dtype: object position 200000
+
+reviewerID                                           A39K52QDP4C3ZS
+asin                                                     B000R2PC2M
+reviewerName                                          Peter Brockie
+helpful                                                      [2, 2]
+unixReviewTime                                           1352419200
+reviewText        I picked these up to replace the cheap headpho...
+overall                                                           4
+reviewTime                                               11 9, 2012
+summary           Fantastic Headphones - Noise canceling could u...
+Name: 300039, dtype: object position 300000
+
+reviewerID                                            AKWFWHW5ROIZS
+asin                                                     B0016D9URO
+reviewerName                                             R. Blacker
+helpful                                                      [0, 0]
+unixReviewTime                                           1226102400
+reviewText        Not much to say about this product, except tha...
+overall                                                           5
+reviewTime                                               11 8, 2008
+summary                                    Good adpater, Works well
+Name: 400007, dtype: object position 400000
+
+reviewerID                                           A2L5R1F9WALW7W
+asin                                                     B001NPDA44
+reviewerName                                  K. Bunker "K. Bunker"
+helpful                                                  [286, 294]
+unixReviewTime                                           1235520000
+reviewText        Does what it's supposed to do and looks fine t...
+overall                                                           5
+reviewTime                                              02 25, 2009
+summary                               Perfectly good for what it is
+Name: 500001, dtype: object position 500000
